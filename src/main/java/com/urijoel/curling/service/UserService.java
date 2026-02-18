@@ -5,51 +5,51 @@
 package com.urijoel.curling.service;
 
 import com.urijoel.curling.model.User;
-import com.urijoel.curling.model.Role;
 import com.urijoel.curling.repository.UserRepository;
-import com.urijoel.curling.repository.UserRepository;
-import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
+import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 
 @Service
-@RequiredArgsConstructor // Lombok nos crea el constructor con los "final" automáticamente
-public class UserService {
+public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder; // Para encriptar contraseña
+    private final PasswordEncoder passwordEncoder;
 
-    /**
-     * Registra un nuevo usuario cifrando su clave.
-     */
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
+    }
+
     public User registerUser(User user) {
-        // 1. Validar email único
         if (userRepository.existsByEmail(user.getEmail())) {
-            throw new RuntimeException("El email ya está en uso");
+            throw new RuntimeException("El email ya existe");
         }
-
-        // 2. Asignar ROL por defecto si no viene (USER)
         if (user.getRole() == null) {
-            user.setRole(Role.USER);
+            user.setRole("USER");
         }
-
-        // 3. Encriptar contraseña (Nunca guardar en texto plano)
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-
-        // 4. Guardar
         return userRepository.save(user);
     }
-
-    // Método para buscar usuario (usado en login o perfil)
-    public Optional<User> findByEmail(String email) {
-        return userRepository.findByEmail(email);
-    }
     
-    // Listar todos (para admin)
     public List<User> findAll() {
         return userRepository.findAll();
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado"));
+
+        return new org.springframework.security.core.userdetails.User(
+                user.getEmail(),
+                user.getPassword(),
+                Collections.singletonList(new SimpleGrantedAuthority("ROLE_" + user.getRole()))
+        );
     }
 }
