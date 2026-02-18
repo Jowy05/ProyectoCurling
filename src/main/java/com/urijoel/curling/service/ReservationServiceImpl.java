@@ -8,6 +8,7 @@ import com.urijoel.curling.model.Reservation;
 import com.urijoel.curling.repository.ReservationRepository;
 import org.springframework.stereotype.Service;
 import java.util.List;
+import java.util.Optional;
 
 @Service("reservationServiceImpl")
 public class ReservationServiceImpl implements ReservationService {
@@ -30,9 +31,34 @@ public class ReservationServiceImpl implements ReservationService {
 
     @Override
     public Reservation save(Reservation reservation) {
-        if (reservation.getStatus() == null) {
+        if ("INDIVIDUAL".equalsIgnoreCase(reservation.getType())) {
+            
+            Optional<Reservation> waitingGame = repository.findFirstByTypeAndStatusAndDateAndSheetNumber(
+                "INDIVIDUAL", 
+                "PENDIENTE", 
+                reservation.getDate(), 
+                reservation.getSheetNumber()
+            );
+
+            if (waitingGame.isPresent()) {
+                Reservation existing = waitingGame.get();
+                
+                if (!existing.getPlayer1().getId().equals(reservation.getPlayer1().getId())) {
+                    
+                    existing.setPlayer2(reservation.getPlayer1());
+                    existing.setStatus("CONFIRMADA");
+                    
+                    return repository.save(existing);
+                }
+            }
+            
             reservation.setStatus("PENDIENTE");
+            reservation.setPlayer2(null);
+            
+        } else {
+            reservation.setStatus("CONFIRMADA");
         }
+
         return repository.save(reservation);
     }
 
