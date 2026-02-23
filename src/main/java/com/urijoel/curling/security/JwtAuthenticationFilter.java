@@ -1,3 +1,7 @@
+/**
+ *
+ * @author Uri
+ */
 package com.urijoel.curling.security;
 
 import jakarta.servlet.FilterChain;
