@@ -1,16 +1,15 @@
-/**
- *
- * @author jowyd
- */
 package com.urijoel.curling.service;
 
+/**
+ * @author jowyd
+ */
 import com.urijoel.curling.model.Reservation;
 import com.urijoel.curling.repository.ReservationRepository;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
-@Service("reservationServiceImpl")
+@Service
 public class ReservationServiceImpl implements ReservationService {
 
     private final ReservationRepository repository;
@@ -33,6 +32,7 @@ public class ReservationServiceImpl implements ReservationService {
     public Reservation save(Reservation reservation) {
         if ("INDIVIDUAL".equalsIgnoreCase(reservation.getType())) {
             
+            // busca a alguien esperando en la misma pista de curling y hora
             Optional<Reservation> waitingGame = repository.findFirstByTypeAndStatusAndDateAndSheetNumber(
                 "INDIVIDUAL", 
                 "PENDIENTE", 
@@ -44,10 +44,8 @@ public class ReservationServiceImpl implements ReservationService {
                 Reservation existing = waitingGame.get();
                 
                 if (!existing.getPlayer1().getId().equals(reservation.getPlayer1().getId())) {
-                    
                     existing.setPlayer2(reservation.getPlayer1());
                     existing.setStatus("CONFIRMADA");
-                    
                     return repository.save(existing);
                 }
             }

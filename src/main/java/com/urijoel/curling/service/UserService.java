@@ -1,9 +1,8 @@
-/**
- *
- * @author jowyd
- */
 package com.urijoel.curling.service;
 
+/**
+ * @author jowyd
+ */
 import com.urijoel.curling.model.User;
 import com.urijoel.curling.repository.UserRepository;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -28,7 +27,7 @@ public class UserService implements UserDetailsService {
 
     public User registerUser(User user) {
         if (userRepository.existsByEmail(user.getEmail())) {
-            throw new RuntimeException("El email ya existe");
+            throw new RuntimeException("el email ya existe");
         }
         if (user.getRole() == null) {
             user.setRole("USER");
@@ -44,7 +43,7 @@ public class UserService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado"));
+                .orElseThrow(() -> new UsernameNotFoundException("usuario no encontrado"));
 
         return new org.springframework.security.core.userdetails.User(
                 user.getEmail(),

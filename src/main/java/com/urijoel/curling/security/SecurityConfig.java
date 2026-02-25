@@ -1,12 +1,10 @@
-/**
- *
- * @author Uri
- */
 package com.urijoel.curling.security;
 
+/**
+ * @author Uri
+ */
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -18,11 +16,9 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
 
     private final JwtAuthenticationFilter jwtAuthFilter;
-    private final AuthenticationProvider authenticationProvider;
 
-    public SecurityConfig(JwtAuthenticationFilter jwtAuthFilter, AuthenticationProvider authenticationProvider) {
+    public SecurityConfig(JwtAuthenticationFilter jwtAuthFilter) {
         this.jwtAuthFilter = jwtAuthFilter;
-        this.authenticationProvider = authenticationProvider;
     }
 
     @Bean
@@ -31,19 +27,18 @@ public class SecurityConfig {
             //usamos jwt
             .csrf(csrf -> csrf.disable()) 
             .authorizeHttpRequests(auth -> auth
-                //rutas publicas para el login y registro
+                //abierto a todos los niveles
                 .requestMatchers("/auth/**").permitAll()
-                //rutas para el swagger 
+                // acceso libre a swagger
                 .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
-                //token
+                // el resto de la mazmorra requiere salvoconducto
                 .anyRequest().authenticated()
             )
-            //no guarda sesiones
+            //amnesia total en los guardias, cada peticion es unica
             .sessionManagement(session -> session
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             )
-            .authenticationProvider(authenticationProvider)
-            //nuestro filtro 
+            //revisa el token antes que nada
             .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();

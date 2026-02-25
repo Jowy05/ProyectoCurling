@@ -1,9 +1,9 @@
+
+package com.urijoel.curling.model;
 /**
  *
  * @author jowyd
  */
-package com.urijoel.curling.model;
-
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -29,22 +29,54 @@ public class MatchResult {
         this.recordedAt = LocalDateTime.now();
     }
 
+    public String getId() {
+        return id;
+    }
 
-    public String getId() { return id; }
-    public void setId(String id) { this.id = id; }
+    public void setId(String id) {
+        this.id = id;
+    }
 
-    public Reservation getReservation() { return reservation; }
-    public void setReservation(Reservation reservation) { this.reservation = reservation; }
+    public Reservation getReservation() {
+        return reservation;
+    }
 
-    public User getWinner() { return winner; }
-    public void setWinner(User winner) { this.winner = winner; }
+    public void setReservation(Reservation reservation) {
+        this.reservation = reservation;
+    }
 
-    public String getScore() { return score; }
-    public void setScore(String score) { this.score = score; }
+    public User getWinner() {
+        return winner;
+    }
 
-    public String getComments() { return comments; }
-    public void setComments(String comments) { this.comments = comments; }
+    public void setWinner(User winner) {
+        this.winner = winner;
+    }
 
-    public LocalDateTime getRecordedAt() { return recordedAt; }
-    public void setRecordedAt(LocalDateTime recordedAt) { this.recordedAt = recordedAt; }
+    public String getScore() {
+        return score;
+    }
+
+    public void setScore(String score) {
+        this.score = score;
+    }
+
+    public String getComments() {
+        return comments;
+    }
+
+    public void setComments(String comments) {
+        this.comments = comments;
+    }
+
+    public LocalDateTime getRecordedAt() {
+        return recordedAt;
+    }
+
+    public void setRecordedAt(LocalDateTime recordedAt) {
+        this.recordedAt = recordedAt;
+    }
+
+
+    
 }
