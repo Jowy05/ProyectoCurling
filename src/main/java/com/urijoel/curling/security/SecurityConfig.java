@@ -24,21 +24,23 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-            //usamos jwt
+            // usamos jwt
             .csrf(csrf -> csrf.disable()) 
             .authorizeHttpRequests(auth -> auth
-                //abierto a todos los niveles
+                // abierto a todos los niveles
                 .requestMatchers("/auth/**").permitAll()
+                // permitir a Spring mostrar los errores reales en lugar de un 403
+                .requestMatchers("/error").permitAll()
                 // acceso libre a swagger
                 .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
                 // el resto de la mazmorra requiere salvoconducto
                 .anyRequest().authenticated()
             )
-            //amnesia total en los guardias, cada peticion es unica
+            // amnesia total en los guardias, cada peticion es unica
             .sessionManagement(session -> session
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             )
-            //revisa el token antes que nada
+            // revisa el token antes que nada
             .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
