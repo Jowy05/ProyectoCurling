@@ -1,15 +1,14 @@
-package com.urijoel.curling.dto;
-
 /**
  * @author Uri
  */
+package com.urijoel.curling.dto;
+
 import java.time.LocalDateTime;
 
 public class ReservationRequestDTO {
 
     private LocalDateTime date;
-    private Integer sheetNumber; //pistas
-    private String type; //individual o pareja
+    private Integer sheetNumber;
     private String player1Id;
     private String player2Id; 
 
@@ -30,14 +29,6 @@ public class ReservationRequestDTO {
 
     public void setSheetNumber(Integer sheetNumber) {
         this.sheetNumber = sheetNumber;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
     }
 
     public String getPlayer1Id() {

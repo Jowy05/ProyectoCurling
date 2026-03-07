@@ -1,28 +1,25 @@
 package com.urijoel.curling.model;
+
 /**
  *
  * @author jowyd
  */
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "users")
 public class User {
 
-    @Id
     private String id;
     private String name;
 
-    @Indexed(unique = true)
     private String email;
 
     private String password;
     private Integer age;
     private String sex;
 
-    private String level; 
-    private String role; 
+    private Level level;
+    private Role role;
 
     public User() {
     }
@@ -75,21 +72,20 @@ public class User {
         this.sex = sex;
     }
 
-    public String getLevel() {
+    public Level getLevel() {
         return level;
     }
 
-    public void setLevel(String level) {
+    public void setLevel(Level level) {
         this.level = level;
     }
 
-    public String getRole() {
+    public Role getRole() {
         return role;
     }
 
-    public void setRole(String role) {
+    public void setRole(Role role) {
         this.role = role;
     }
 
-    
 }

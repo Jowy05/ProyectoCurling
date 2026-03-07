@@ -4,6 +4,9 @@
  */
 package com.urijoel.curling.dto;
 
+import com.urijoel.curling.model.Level;
+import com.urijoel.curling.model.Role;
+
 public class UserDTO {
 
     private String id;
@@ -11,14 +14,13 @@ public class UserDTO {
     private String email;
     private Integer age;
     private String sex;
-    private String level;
-    private String role;
+    private Level level;
+    private Role role;
 
     public UserDTO() {
     }
 
-    // constructores con los datos basicos que se envian a angular
-    public UserDTO(String id, String name, String email, Integer age, String sex, String level, String role) {
+    public UserDTO(String id, String name, String email, Integer age, String sex, Level level, Role role) {
         this.id = id;
         this.name = name;
         this.email = email;
@@ -68,21 +70,19 @@ public class UserDTO {
         this.sex = sex;
     }
 
-    public String getLevel() {
+    public Level getLevel() {
         return level;
     }
 
-    public void setLevel(String level) {
+    public void setLevel(Level level) {
         this.level = level;
     }
 
-    public String getRole() {
+    public Role getRole() {
         return role;
     }
 
-    public void setRole(String role) {
+    public void setRole(Role role) {
         this.role = role;
     }
-
-    
 }

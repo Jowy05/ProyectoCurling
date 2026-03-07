@@ -1,18 +1,22 @@
-
 package com.urijoel.curling.dto;
+
+import com.urijoel.curling.model.Level;
+
 /**
  *
  * @author Uri
  */
 public class RegisterRequestDTO {
+
     private String name;
     private String email;
     private String password;
     private Integer age;
     private String sex;
-    private String level;
+    private Level level;
 
-    public RegisterRequestDTO() {}
+    public RegisterRequestDTO() {
+    }
 
     public String getName() {
         return name;
@@ -54,13 +58,12 @@ public class RegisterRequestDTO {
         this.sex = sex;
     }
 
-    public String getLevel() {
+    public Level getLevel() {
         return level;
     }
 
-    public void setLevel(String level) {
+    public void setLevel(Level level) {
         this.level = level;
     }
-    
-   
+
 }

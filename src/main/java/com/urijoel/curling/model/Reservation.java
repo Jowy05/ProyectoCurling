@@ -1,33 +1,25 @@
-
 package com.urijoel.curling.model;
+
 /**
  *
  * @author jowyd
  */
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import java.time.LocalDateTime;
 
 @Document(collection = "reservations")
 public class Reservation {
 
-    @Id
     private String id;
-    
+
     private LocalDateTime date;
     private Integer sheetNumber;
-    
-    private String type; 
-    
-    private String status; 
 
-    @DBRef
+    private ReservationStatus status;
+
     private User player1;
 
-    @DBRef
     private User player2;
-
 
     public String getId() {
         return id;
@@ -53,19 +45,11 @@ public class Reservation {
         this.sheetNumber = sheetNumber;
     }
 
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public String getStatus() {
+    public ReservationStatus getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(ReservationStatus status) {
         this.status = status;
     }
 

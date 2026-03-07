@@ -1,10 +1,11 @@
-package com.urijoel.curling.service;
-
 /**
  * @author jowyd
  */
+package com.urijoel.curling.service;
+
 import com.urijoel.curling.model.MatchResult;
 import com.urijoel.curling.model.Reservation;
+import com.urijoel.curling.model.ReservationStatus;
 import com.urijoel.curling.repository.MatchResultRepository;
 import com.urijoel.curling.repository.ReservationRepository;
 import org.springframework.stereotype.Service;
@@ -29,7 +30,7 @@ public class MatchResultServiceImpl implements MatchResultService {
 
         Reservation reservation = result.getReservation();
         if (reservation != null) {
-            reservation.setStatus("FINALIZADA");
+            reservation.setStatus(ReservationStatus.FINALIZADA);
             reservationRepository.save(reservation);
         }
         return saved;
@@ -42,13 +43,11 @@ public class MatchResultServiceImpl implements MatchResultService {
 
     @Override
     public Map<String, Object> getUserStatistics(String userId) {
-        //jugadas/ganadas
         List<MatchResult> wonMatches = matchRepository.findByWinnerId(userId);
         
-        // sacamos las reservas finalizadas del jugador para saber cuantas ha jugado
         List<Reservation> userReservations = reservationRepository.findByUserId(userId);
         long playedMatches = userReservations.stream()
-                .filter(r -> "FINALIZADA".equals(r.getStatus()))
+                .filter(r -> ReservationStatus.FINALIZADA.equals(r.getStatus()))
                 .count();
         
         Map<String, Object> stats = new HashMap<>();

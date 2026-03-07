@@ -1,8 +1,9 @@
+/**
+ * @author Uri
+ */
 package com.urijoel.curling.dto;
 
-/**
- * @author jowyd
- */
+import com.urijoel.curling.model.ReservationStatus;
 import java.time.LocalDateTime;
 
 public class ReservationResponseDTO {
@@ -10,8 +11,7 @@ public class ReservationResponseDTO {
     private String id;
     private LocalDateTime date;
     private Integer sheetNumber;
-    private String type;
-    private String status;
+    private ReservationStatus status;
     
     private UserDTO player1;
     private UserDTO player2;
@@ -19,7 +19,6 @@ public class ReservationResponseDTO {
     public ReservationResponseDTO() {
     }
 
-    // getters y setters
     public String getId() {
         return id;
     }
@@ -44,19 +43,11 @@ public class ReservationResponseDTO {
         this.sheetNumber = sheetNumber;
     }
 
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public String getStatus() {
+    public ReservationStatus getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(ReservationStatus status) {
         this.status = status;
     }
 
