@@ -1,5 +1,4 @@
 package com.urijoel.curling.security;
-
 /**
  * @author Uri
  */
@@ -27,13 +26,14 @@ public class SecurityConfig {
         http
             .csrf(csrf -> csrf.disable()) 
             .authorizeHttpRequests(auth -> auth
+
                 .requestMatchers("/auth/**").permitAll()
                 .requestMatchers("/error").permitAll()
-                .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
                 
+                .requestMatchers("/v3/api-docs", "/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
+
                 .requestMatchers(HttpMethod.GET, "/api/reservations").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.DELETE, "/api/reservations/**").hasRole("ADMIN")
-
                 .anyRequest().authenticated()
             )
             .sessionManagement(session -> session
