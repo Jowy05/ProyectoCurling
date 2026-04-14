@@ -1,9 +1,5 @@
-
 package com.urijoel.curling.repository;
-/**
- *
- * @author jowyd
- */
+
 import com.urijoel.curling.model.User;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import java.util.Optional;

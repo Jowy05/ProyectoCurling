@@ -1,15 +1,13 @@
 package com.urijoel.curling.model;
 
-/**
- *
- * @author jowyd
- */
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import java.time.LocalDateTime;
 
 @Document(collection = "reservations")
 public class Reservation {
 
+    @Id
     private String id;
 
     private LocalDateTime date;

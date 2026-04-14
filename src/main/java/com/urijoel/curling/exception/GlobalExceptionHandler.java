@@ -1,7 +1,3 @@
-/**
- *
- * @author jowyd
- */
 package com.urijoel.curling.exception;
 
 import com.urijoel.curling.dto.ErrorResponseDTO;
@@ -30,15 +26,12 @@ public class GlobalExceptionHandler {
                 HttpStatus.UNAUTHORIZED.value(),
                 "Unauthorized",
                 "Email o contraseña incorrectos."
-            );
+        );
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(error);
     }
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponseDTO> handleGenericException(Exception ex) {
-
-        ex.printStackTrace(); 
-        
         ErrorResponseDTO error = new ErrorResponseDTO(
                 HttpStatus.INTERNAL_SERVER_ERROR.value(),
                 "Internal Server Error",

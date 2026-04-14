@@ -1,17 +1,13 @@
-/**
- * @author jowyd
- */
 package com.urijoel.curling.service;
 
+import com.urijoel.curling.dto.StatsDTO;
 import com.urijoel.curling.model.MatchResult;
 import com.urijoel.curling.model.Reservation;
 import com.urijoel.curling.model.ReservationStatus;
 import com.urijoel.curling.repository.MatchResultRepository;
 import com.urijoel.curling.repository.ReservationRepository;
 import org.springframework.stereotype.Service;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class MatchResultServiceImpl implements MatchResultService {
@@ -27,7 +23,6 @@ public class MatchResultServiceImpl implements MatchResultService {
     @Override
     public MatchResult saveResult(MatchResult result) {
         MatchResult saved = matchRepository.save(result);
-
         Reservation reservation = result.getReservation();
         if (reservation != null) {
             reservation.setStatus(ReservationStatus.FINALIZADA);
@@ -37,23 +32,27 @@ public class MatchResultServiceImpl implements MatchResultService {
     }
 
     @Override
+    public List<MatchResult> getAllResults() {
+        return matchRepository.findAll();
+    }
+
+    @Override
+    public List<MatchResult> getResultsByUserId(String userId) {
+        return matchRepository.findByParticipantId(userId);
+    }
+
+    @Override
     public List<MatchResult> getResultsByWinner(String userId) {
         return matchRepository.findByWinnerId(userId);
     }
 
     @Override
-    public Map<String, Object> getUserStatistics(String userId) {
-        List<MatchResult> wonMatches = matchRepository.findByWinnerId(userId);
-        
-        List<Reservation> userReservations = reservationRepository.findByUserId(userId);
-        long playedMatches = userReservations.stream()
-                .filter(r -> ReservationStatus.FINALIZADA.equals(r.getStatus()))
-                .count();
-        
-        Map<String, Object> stats = new HashMap<>();
-        stats.put("wins", wonMatches.size());
-        stats.put("played", playedMatches);
-        
-        return stats;
+    public StatsDTO getUserStatistics(String userId) {
+        List<MatchResult> allResults = matchRepository.findByParticipantId(userId);
+        long played = allResults.size();
+        long wins = matchRepository.findByWinnerId(userId).size();
+        long losses = played - wins;
+        double winRate = played > 0 ? Math.round((wins * 100.0 / played) * 10.0) / 10.0 : 0.0;
+        return new StatsDTO(played, wins, losses, winRate);
     }
 }

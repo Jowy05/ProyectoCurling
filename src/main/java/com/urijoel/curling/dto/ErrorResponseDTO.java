@@ -1,18 +1,16 @@
-/**
- *
- * @author jowyd
- */
 package com.urijoel.curling.dto;
 
 import java.time.LocalDateTime;
 
 public class ErrorResponseDTO {
+
     private LocalDateTime timestamp;
     private int status;
     private String error;
     private String message;
 
-    public ErrorResponseDTO() {}
+    public ErrorResponseDTO() {
+    }
 
     public ErrorResponseDTO(int status, String error, String message) {
         this.timestamp = LocalDateTime.now();

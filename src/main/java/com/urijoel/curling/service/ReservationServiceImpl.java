@@ -1,6 +1,3 @@
-/**
- * @author jowyd
- */
 package com.urijoel.curling.service;
 
 import com.urijoel.curling.model.Reservation;
@@ -35,8 +32,8 @@ public class ReservationServiceImpl implements ReservationService {
     public Reservation save(Reservation reservation) {
         if (reservation.getPlayer2() == null) {
             Optional<Reservation> waitingGame = repository.findFirstByStatusAndDateAndSheetNumber(
-                ReservationStatus.PENDIENTE, 
-                reservation.getDate(), 
+                ReservationStatus.PENDIENTE,
+                reservation.getDate(),
                 reservation.getSheetNumber()
             );
 
@@ -71,7 +68,6 @@ public class ReservationServiceImpl implements ReservationService {
         LocalDate date = LocalDate.parse(dateString);
         LocalDateTime startOfDay = date.atStartOfDay();
         LocalDateTime endOfDay = date.atTime(23, 59, 59);
-
         return repository.findByDateBetween(startOfDay, endOfDay);
     }
 }

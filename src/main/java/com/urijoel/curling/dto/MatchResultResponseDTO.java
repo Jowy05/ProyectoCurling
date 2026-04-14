@@ -1,25 +1,17 @@
-package com.urijoel.curling.model;
+package com.urijoel.curling.dto;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
 import java.time.LocalDateTime;
 
-@Document(collection = "match_results")
-public class MatchResult {
+public class MatchResultResponseDTO {
 
-    @Id
     private String id;
-
-    private Reservation reservation;
-
-    private User winner;
-
+    private String reservationId;
+    private UserDTO winner;
     private String score;
     private String comments;
     private LocalDateTime recordedAt;
 
-    public MatchResult() {
-        this.recordedAt = LocalDateTime.now();
+    public MatchResultResponseDTO() {
     }
 
     public String getId() {
@@ -30,19 +22,19 @@ public class MatchResult {
         this.id = id;
     }
 
-    public Reservation getReservation() {
-        return reservation;
+    public String getReservationId() {
+        return reservationId;
     }
 
-    public void setReservation(Reservation reservation) {
-        this.reservation = reservation;
+    public void setReservationId(String reservationId) {
+        this.reservationId = reservationId;
     }
 
-    public User getWinner() {
+    public UserDTO getWinner() {
         return winner;
     }
 
-    public void setWinner(User winner) {
+    public void setWinner(UserDTO winner) {
         this.winner = winner;
     }
 
@@ -69,7 +61,4 @@ public class MatchResult {
     public void setRecordedAt(LocalDateTime recordedAt) {
         this.recordedAt = recordedAt;
     }
-
-
-    
 }

@@ -1,8 +1,5 @@
 package com.urijoel.curling.controller;
 
-/**
- * @author Uri
- */
 import com.urijoel.curling.dto.AuthResponseDTO;
 import com.urijoel.curling.dto.LoginRequestDTO;
 import com.urijoel.curling.dto.RegisterRequestDTO;
@@ -30,7 +27,6 @@ public class AuthController {
 
     @PostMapping("/register")
     public ResponseEntity<AuthResponseDTO> register(@RequestBody RegisterRequestDTO request) {
-        //creamos el usuario de base
         User user = new User();
         user.setName(request.getName());
         user.setEmail(request.getEmail());
@@ -38,22 +34,19 @@ public class AuthController {
         user.setAge(request.getAge());
         user.setSex(request.getSex());
         user.setLevel(request.getLevel());
-        
+
         userService.registerUser(user);
-        
-        //generamos el token directamente tras registrar
+
         String token = jwtService.generateToken(userService.loadUserByUsername(user.getEmail()));
         return ResponseEntity.ok(new AuthResponseDTO(token));
     }
 
     @PostMapping("/login")
     public ResponseEntity<AuthResponseDTO> login(@RequestBody LoginRequestDTO request) {
-        //validamos credenciales
         authenticationManager.authenticate(
             new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
         );
-        
-        // si va bien, devolveme el token
+
         String token = jwtService.generateToken(userService.loadUserByUsername(request.getEmail()));
         return ResponseEntity.ok(new AuthResponseDTO(token));
     }

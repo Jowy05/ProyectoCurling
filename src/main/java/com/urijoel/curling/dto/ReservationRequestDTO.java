@@ -1,6 +1,3 @@
-/**
- * @author Uri
- */
 package com.urijoel.curling.dto;
 
 import java.time.LocalDateTime;
@@ -10,7 +7,7 @@ public class ReservationRequestDTO {
     private LocalDateTime date;
     private Integer sheetNumber;
     private String player1Id;
-    private String player2Id; 
+    private String player2Id;
 
     public ReservationRequestDTO() {
     }

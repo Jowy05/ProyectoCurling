@@ -1,7 +1,3 @@
-/**
- *
- * @author Uri
- */
 package com.urijoel.curling.dto;
 
 import com.urijoel.curling.model.Level;

@@ -1,7 +1,3 @@
-/**
- *
- * @author jowyd
- */
 package com.urijoel.curling.config;
 
 import io.swagger.v3.oas.models.Components;
@@ -18,7 +14,7 @@ public class OpenApiConfig {
     @Bean
     public OpenAPI customOpenAPI() {
         final String securitySchemeName = "bearerAuth";
-        
+
         return new OpenAPI()
                 .info(new Info()
                         .title("API de Curling Club")

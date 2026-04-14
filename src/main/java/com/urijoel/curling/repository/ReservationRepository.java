@@ -1,7 +1,3 @@
-/**
- *
- * @author jowyd
- */
 package com.urijoel.curling.repository;
 
 import com.urijoel.curling.model.Reservation;

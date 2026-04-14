@@ -1,7 +1,5 @@
 package com.urijoel.curling.security;
-/**
- * @author Uri
- */
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -24,16 +22,23 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-            .csrf(csrf -> csrf.disable()) 
+            .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
-
                 .requestMatchers("/auth/**").permitAll()
                 .requestMatchers("/error").permitAll()
-                
                 .requestMatchers("/v3/api-docs", "/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
+
+                .requestMatchers(HttpMethod.GET, "/api/users/profile").authenticated()
+                .requestMatchers(HttpMethod.PUT, "/api/users/profile").authenticated()
+                .requestMatchers(HttpMethod.GET, "/api/users").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.PUT, "/api/users/**").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.DELETE, "/api/users/**").hasRole("ADMIN")
 
                 .requestMatchers(HttpMethod.GET, "/api/reservations").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.DELETE, "/api/reservations/**").hasRole("ADMIN")
+
+                .requestMatchers(HttpMethod.GET, "/api/results").hasRole("ADMIN")
+
                 .anyRequest().authenticated()
             )
             .sessionManagement(session -> session

@@ -1,7 +1,3 @@
-/**
- *
- * @author Uri
- */
 package com.urijoel.curling.security;
 
 import io.jsonwebtoken.Claims;
@@ -23,7 +19,6 @@ public class JwtService {
     @Value("${application.security.jwt.secret-key}")
     private String secretKey;
 
-    
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
     }

@@ -1,14 +1,12 @@
-/**
- *
- * @author Uri
- */
 package com.urijoel.curling.dto;
 
 public class LoginRequestDTO {
+
     private String email;
     private String password;
 
-    public LoginRequestDTO() {}
+    public LoginRequestDTO() {
+    }
 
     public String getEmail() {
         return email;
@@ -25,6 +23,4 @@ public class LoginRequestDTO {
     public void setPassword(String password) {
         this.password = password;
     }
-
-    
 }

@@ -1,6 +1,3 @@
-/**
- * @author Uri
- */
 package com.urijoel.curling.dto;
 
 import com.urijoel.curling.model.ReservationStatus;
@@ -12,7 +9,6 @@ public class ReservationResponseDTO {
     private LocalDateTime date;
     private Integer sheetNumber;
     private ReservationStatus status;
-    
     private UserDTO player1;
     private UserDTO player2;
 

@@ -2,10 +2,6 @@ package com.urijoel.curling.dto;
 
 import com.urijoel.curling.model.Level;
 
-/**
- *
- * @author Uri
- */
 public class RegisterRequestDTO {
 
     private String name;

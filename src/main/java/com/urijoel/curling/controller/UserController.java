@@ -1,64 +1,70 @@
 package com.urijoel.curling.controller;
 
-/**
- *
- * @author Uri
- */
 import com.urijoel.curling.dto.UserDTO;
 import com.urijoel.curling.model.User;
-import com.urijoel.curling.repository.UserRepository;
+import com.urijoel.curling.service.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
 
-    private final UserRepository userRepository;
+    private final UserService userService;
 
-    public UserController(UserRepository userRepository) {
-        this.userRepository = userRepository;
+    public UserController(UserService userService) {
+        this.userService = userService;
     }
 
-    //permite al usuario ver su propia ficha de aventurero
     @GetMapping("/profile")
     public ResponseEntity<UserDTO> getProfile() {
-        //extraemos el email del  token que viene en la peticion
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
-        
-        User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("usuario no encontrado"));
-
-        // transformamos el usuario en dto
-        UserDTO dto = new UserDTO(
-            user.getId(), 
-            user.getName(), 
-            user.getEmail(), 
-            user.getAge(), 
-            user.getSex(), 
-            user.getLevel(), 
-            user.getRole()
-        );
-
-        return ResponseEntity.ok(dto);
+        User user = userService.findByEmail(email);
+        return ResponseEntity.ok(toDTO(user));
     }
 
-    // permite al usuario actualizar sus datos de perfil
     @PutMapping("/profile")
     public ResponseEntity<UserDTO> updateProfile(@RequestBody UserDTO updates) {
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
-        User user = userRepository.findByEmail(email).orElseThrow();
+        User current = userService.findByEmail(email);
+        updates.setRole(null);
+        User updated = userService.updateUser(current.getId(), updates);
+        return ResponseEntity.ok(toDTO(updated));
+    }
 
-        // actualizamos 
-        user.setName(updates.getName());
-        user.setAge(updates.getAge());
-        user.setSex(updates.getSex());
-        user.setLevel(updates.getLevel());
+    @GetMapping
+    public ResponseEntity<List<UserDTO>> getAllUsers() {
+        List<UserDTO> users = userService.findAll().stream()
+                .map(this::toDTO)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(users);
+    }
 
-        userRepository.save(user);
+    @PutMapping("/{id}")
+    public ResponseEntity<UserDTO> updateUser(@PathVariable String id, @RequestBody UserDTO updates) {
+        User updated = userService.updateUser(id, updates);
+        return ResponseEntity.ok(toDTO(updated));
+    }
 
-        // devolve los datos actualizados paraangular
-        return ResponseEntity.ok(updates);
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteUser(@PathVariable String id) {
+        userService.deleteUser(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    private UserDTO toDTO(User user) {
+        return new UserDTO(
+                user.getId(),
+                user.getName(),
+                user.getEmail(),
+                user.getAge(),
+                user.getSex(),
+                user.getLevel(),
+                user.getRole()
+        );
     }
 }

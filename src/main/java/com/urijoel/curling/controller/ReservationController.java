@@ -1,9 +1,5 @@
 package com.urijoel.curling.controller;
 
-/**
- * @author jowyd
- */
-
 import com.urijoel.curling.dto.ReservationRequestDTO;
 import com.urijoel.curling.dto.ReservationResponseDTO;
 import com.urijoel.curling.dto.UserDTO;
@@ -34,7 +30,7 @@ public class ReservationController {
         Reservation reservation = new Reservation();
         reservation.setDate(request.getDate());
         reservation.setSheetNumber(request.getSheetNumber());
-        
+
         User p1 = userRepository.findById(request.getPlayer1Id())
                 .orElseThrow(() -> new RuntimeException("Jugador 1 no encontrado"));
         reservation.setPlayer1(p1);
@@ -46,13 +42,13 @@ public class ReservationController {
         }
 
         Reservation saved = reservationService.save(reservation);
-        return ResponseEntity.ok(convertToDTO(saved));
+        return ResponseEntity.ok(toDTO(saved));
     }
 
     @GetMapping
     public ResponseEntity<List<ReservationResponseDTO>> getAll() {
         List<ReservationResponseDTO> dtos = reservationService.getAll().stream()
-                .map(this::convertToDTO)
+                .map(this::toDTO)
                 .collect(Collectors.toList());
         return ResponseEntity.ok(dtos);
     }
@@ -60,7 +56,7 @@ public class ReservationController {
     @GetMapping("/history/{userId}")
     public ResponseEntity<List<ReservationResponseDTO>> getHistory(@PathVariable String userId) {
         List<ReservationResponseDTO> dtos = reservationService.getHistory(userId).stream()
-                .map(this::convertToDTO)
+                .map(this::toDTO)
                 .collect(Collectors.toList());
         return ResponseEntity.ok(dtos);
     }
@@ -68,7 +64,7 @@ public class ReservationController {
     @GetMapping("/availability")
     public ResponseEntity<List<ReservationResponseDTO>> getAvailability(@RequestParam String date) {
         List<ReservationResponseDTO> dtos = reservationService.getAvailabilityByDate(date).stream()
-                .map(this::convertToDTO)
+                .map(this::toDTO)
                 .collect(Collectors.toList());
         return ResponseEntity.ok(dtos);
     }
@@ -79,23 +75,23 @@ public class ReservationController {
         return ResponseEntity.noContent().build();
     }
 
-    private ReservationResponseDTO convertToDTO(Reservation res) {
+    private ReservationResponseDTO toDTO(Reservation res) {
         ReservationResponseDTO dto = new ReservationResponseDTO();
         dto.setId(res.getId());
         dto.setDate(res.getDate());
         dto.setSheetNumber(res.getSheetNumber());
         dto.setStatus(res.getStatus());
-        
+
         if (res.getPlayer1() != null) {
-            dto.setPlayer1(new UserDTO(res.getPlayer1().getId(), 
-                    res.getPlayer1().getName(), res.getPlayer1().getEmail(), 
-                    res.getPlayer1().getAge(), res.getPlayer1().getSex(), 
+            dto.setPlayer1(new UserDTO(res.getPlayer1().getId(),
+                    res.getPlayer1().getName(), res.getPlayer1().getEmail(),
+                    res.getPlayer1().getAge(), res.getPlayer1().getSex(),
                     res.getPlayer1().getLevel(), res.getPlayer1().getRole()));
         }
         if (res.getPlayer2() != null) {
-            dto.setPlayer2(new UserDTO(res.getPlayer2().getId(), 
-                    res.getPlayer2().getName(), res.getPlayer2().getEmail(), 
-                    res.getPlayer2().getAge(), res.getPlayer2().getSex(), 
+            dto.setPlayer2(new UserDTO(res.getPlayer2().getId(),
+                    res.getPlayer2().getName(), res.getPlayer2().getEmail(),
+                    res.getPlayer2().getAge(), res.getPlayer2().getSex(),
                     res.getPlayer2().getLevel(), res.getPlayer2().getRole()));
         }
         return dto;
